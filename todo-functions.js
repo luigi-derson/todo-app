@@ -63,7 +63,7 @@ const generateTodoDOM = (todo) => {
   button.textContent = "x";
 
   textEl.textContent = todo.text;
-  textEl.setAttribute("href", "/edit.html");
+  textEl.setAttribute("href", `/edit.html#${todo.id}`);
 
   button.addEventListener("click", function() {
     removeTodo(todo.id);
@@ -111,3 +111,5 @@ const generateDOMEl = (element, className, id) => {
 
   return newEl;
 }
+
+
