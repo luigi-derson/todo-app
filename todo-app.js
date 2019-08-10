@@ -1,4 +1,4 @@
-const todos = getSavedTodos();
+let todos = getSavedTodos();
 
 const filters = {
   searchText: "",
@@ -19,18 +19,18 @@ document.querySelector("#add-todo").addEventListener("submit", function(evt) {
   const todo = evt.target.elements.text.value; // Input value
 
   // Add todo to the todos Array if there is some value
-  const todoId = uuidv4();
+  const id = uuidv4();
   if (todo.length > 0) {
     todos.push({
-      id: todoId,
+      id: id,
       text: todo,
       completed: false
     });
   }
   saveTodos(todos);
   evt.target.elements.text.value = ""; // Clear the input field
-  
-  location.assign(`/edit.html#${todoId}`);
+
+  location.assign(`/edit.html#${id}`);
 })
 
 document.querySelector("#check-to-hide").addEventListener("change", function(evt) {
@@ -39,4 +39,9 @@ document.querySelector("#check-to-hide").addEventListener("change", function(evt
 })
 
 
-
+window.addEventListener('storage', function(e) {
+  if (e.key === 'todos') {
+    todos = JSON.parse(e.newValue)
+    renderTodos(todos, filters)
+  }
+})
