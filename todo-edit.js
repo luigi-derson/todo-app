@@ -6,10 +6,16 @@ if (todo === undefined) {
   location.assign('/index.html')
 }
 
+const todoUpdated = document.querySelector('#todo-updated')
+todoUpdated.textContent = generateLastEdited(todo.updatedAt)
+
 const todoText = document.querySelector('#todo-text')
 todoText.value = todo.text
+
 todoText.addEventListener('input', function(text) {
   todo.text = text.target.value
+  todo.updatedAt = moment().valueOf()
+  todoUpdated.textContent = generateLastEdited(todo.updatedAt)
   saveTodos(todos)
 })
 
@@ -29,5 +35,7 @@ window.addEventListener('storage', function(e) {
     }
     const todoText = document.querySelector('#todo-text')
     todoText.value = todo.text
+
+    todoUpdated.textContent = generateLastEdited(todo.updatedAt)
   }
 })

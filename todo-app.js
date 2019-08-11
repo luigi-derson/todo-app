@@ -20,11 +20,15 @@ document.querySelector("#add-todo").addEventListener("submit", function(evt) {
 
   // Add todo to the todos Array if there is some value
   const id = uuidv4();
+  // moment().format('MMM D, YYYY HH:mm:ss')
+  const timeStamp = moment().valueOf()
   if (todo.length > 0) {
     todos.push({
       id: id,
       text: todo,
-      completed: false
+      completed: false,
+      createdAt: timeStamp,
+      updatedAt: timeStamp
     });
   }
   saveTodos(todos);

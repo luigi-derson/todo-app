@@ -112,4 +112,6 @@ const generateDOMEl = (element, className, id) => {
   return newEl;
 }
 
-
+const generateLastEdited = (timestamp) => {
+  return `Last edited ${moment(timestamp).fromNow()}`
+}
