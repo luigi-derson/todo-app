@@ -2,7 +2,8 @@ let todos = getSavedTodos();
 
 const filters = {
   searchText: "",
-  hideCompleted: false
+  hideCompleted: false,
+  sortBy: 'byEdited'
 }
 
 renderTodos(todos, filters);
@@ -40,6 +41,11 @@ document.querySelector("#add-todo").addEventListener("submit", function(evt) {
 document.querySelector("#check-to-hide").addEventListener("change", function(evt) {
   filters.hideCompleted = evt.target.checked
   renderTodos(todos, filters);
+})
+
+document.querySelector('#filter-by').addEventListener('change', function(e) {
+  filters.sortBy = e.target.value
+  renderTodos(todos, filters)
 })
 
 
