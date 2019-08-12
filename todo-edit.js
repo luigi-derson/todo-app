@@ -2,7 +2,7 @@ const todoId = location.hash.substring(1)
 let todos = getSavedTodos()
 const todo = todos.find(todo => todo.id === todoId)
 
-if (todo === undefined) {
+if (!todo) {
   location.assign('/index.html')
 }
 
@@ -30,7 +30,7 @@ window.addEventListener('storage', function(e) {
     todos = JSON.parse(e.newValue)
 
     const todo = todos.find(todo => todo.id === todoId)
-    if (todo === undefined) {
+    if (!todo) {
       location.assign('/index.html')
     }
     const todoText = document.querySelector('#todo-text')

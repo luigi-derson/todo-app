@@ -2,11 +2,7 @@
 const getSavedTodos = () => {
   const todosJSON = localStorage.getItem("todos");
 
-  if (todosJSON !== null) {
-    return JSON.parse(todosJSON);
-  } else {
-    return [];
-  }
+  return todosJSON ? JSON.parse(todosJSON) : [];
 }
 
 // Save todos to localStorage
@@ -16,7 +12,7 @@ const saveTodos = (todos) => {
 
 const sortTodo = (todos, sortBy) => {
   if (sortBy === 'byEdited') {
-    return todos.sort(function(a, b) {
+    return todos.sort((a, b) => {
       if (a.updatedAt > b.updatedAt) {
         return -1
       } else if (a.updatedAt < b.updatedAt) {
@@ -26,7 +22,7 @@ const sortTodo = (todos, sortBy) => {
       }
     })
   } else if (sortBy === 'byCreated') {
-    return todos.sort(function(a, b) {
+    return todos.sort((a, b) => {
       if (a.createdAt > b.createdAt) {
         return -1
       } else if (a.createdAt < b.createdAt) {
@@ -36,7 +32,7 @@ const sortTodo = (todos, sortBy) => {
       }
     })
   } else if (sortBy === 'alphabetical') {
-    return todos.sort(function(a, b) {
+    return todos.sort((a, b) => {
       if (a.text.toLowerCase() < b.text.toLowerCase()) {
         return -1
       } else if (a.text.toLowerCase() > b.text.toLowerCase()) {
@@ -52,7 +48,8 @@ const sortTodo = (todos, sortBy) => {
 
 // Render application todos based on filters
 const renderTodos = (todos, filters) => {
-  todos = sortTodo(todos, filters.sortBy)
+
+  todos = sortTodo(todos, filters.sortBy) //Sort todos
 
   const filtered = todos.filter(function(todo) {
     const searchTextMatch = todo.text.toLowerCase().includes(filters.searchText.toLowerCase());
@@ -69,9 +66,7 @@ const renderTodos = (todos, filters) => {
   document.querySelector("#todo-list").appendChild(generateSummaryDOM(incompleted));
 
   // Showing todos
-  filtered.forEach(function(todo) {
-    document.querySelector("#todo-list").appendChild(generateTodoDOM(todo));
-  })
+  filtered.forEach(todo => document.querySelector("#todo-list").appendChild(generateTodoDOM(todo)))
 }
 
 // Remove todos
@@ -83,7 +78,7 @@ const removeTodo = (id) => {
 
 const toggleTodo = (id) => {
   const todo = todos.find(todo => todo.id === id);
-  if (todo !== undefined) {
+  if (todo) {
     todo.completed = !todo.completed;
   }
 }
@@ -139,7 +134,7 @@ class and ID are optionals */
 const generateDOMEl = (element, className, id) => {
   const newEl = document.createElement(element);
 
-  if (className !== undefined && id !== undefined) {
+  if (className && id) {
     newEl.className = className;
     newEl.id = id;
   } else {
@@ -150,6 +145,4 @@ const generateDOMEl = (element, className, id) => {
   return newEl;
 }
 
-const generateLastEdited = (timestamp) => {
-  return `Last edited ${moment(timestamp).fromNow()}`
-}
+const generateLastEdited = (timestamp) => `Last edited ${moment(timestamp).fromNow()}`
