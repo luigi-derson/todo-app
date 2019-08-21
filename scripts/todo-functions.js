@@ -1,3 +1,5 @@
+'use strict'
+
 // Fetch existing todos from localStorage
 const getSavedTodos = () => {
   const todosJSON = localStorage.getItem("todos");
@@ -54,6 +56,8 @@ const sortTodo = (todos, sortBy) => {
 // Render application todos based on filters
 const renderTodos = (todos, filters) => {
 
+  const todoList = document.querySelector("#todo-list")
+
   todos = sortTodo(todos, filters.sortBy) //Sort todos
 
   const filtered = todos.filter(function(todo) {
@@ -63,15 +67,23 @@ const renderTodos = (todos, filters) => {
     return searchTextMatch && hideCompletedMatch;
   })
 
-  document.querySelector("#todo-list").innerHTML = "";
+  todoList.innerHTML = "";
 
   // Incompleted todos remaining
   const incompleted = filtered.filter(t => !t.completed)
 
-  document.querySelector("#todo-list").appendChild(generateSummaryDOM(incompleted));
+  todoList.appendChild(generateSummaryDOM(incompleted));
 
   // Showing todos
-  filtered.forEach(todo => document.querySelector("#todo-list").appendChild(generateTodoDOM(todo)))
+
+  if (filtered.length > 0) {
+    filtered.forEach(todo => todoList.appendChild(generateTodoDOM(todo)))
+  } else {
+    const noTodos = generateDOMEl('p')
+    noTodos.textContent = 'No to-dos to show'
+    noTodos.classList.add('empty-message')
+    todoList.appendChild(noTodos)
+  }
 }
 
 // Remove todos
@@ -90,36 +102,42 @@ const toggleTodo = (id) => {
 
 // Get the DOM elements for an individual todo
 const generateTodoDOM = (todo) => {
-  const contEl = generateDOMEl("div");
+  const contEl = generateDOMEl("label");
+  const container = generateDOMEl("div")
   const button = generateDOMEl("button");
-  const textEl = generateDOMEl("a");
+  const textEl = generateDOMEl("span");
   const checkEl = generateDOMEl("input");
 
+  // Setup checkbox element
   checkEl.setAttribute("type", "checkbox");
   // Check if todo is completed
   checkEl.checked = todo.completed;
-  button.textContent = "x";
-
-  textEl.textContent = todo.text;
-  textEl.setAttribute("href", `/edit.html#${todo.id}`);
-
-  button.addEventListener("click", function() {
-    removeTodo(todo.id);
-    saveTodos(todos);
-    renderTodos(todos, filters);
-  })
-
+  container.appendChild(checkEl);
   checkEl.addEventListener("change", function() {
     toggleTodo(todo.id)
     saveTodos(todos);
     renderTodos(todos, filters);
   })
 
+  // setup todo text
+  textEl.textContent = todo.text;
+  container.appendChild(textEl);
 
-  // Add the elements to de div container
-  contEl.appendChild(checkEl)
-  contEl.appendChild(textEl);
+  // Setup container
+  contEl.classList.add('list-item')
+  container.classList.add('list-item__container')
+  contEl.appendChild(container)
+
+  // Setup remove button
+
+  button.textContent = "remove";
+  button.classList.add('button', 'button--text')
   contEl.appendChild(button);
+  button.addEventListener("click", function() {
+    removeTodo(todo.id);
+    saveTodos(todos);
+    renderTodos(todos, filters);
+  })
 
   return contEl;
 }
@@ -128,7 +146,9 @@ const generateTodoDOM = (todo) => {
 // Get the DOM elements for list summary
 const generateSummaryDOM = (list) => {
   const summary = document.createElement("h3");
-  summary.textContent = `You have ${list.length} todos left`;
+  summary.classList.add('list-title')
+  const message = list.length === 1 ? `You have ${list.length} todo left` : `You have ${list.length} todos left`
+  summary.textContent = message
   return summary;
 }
 
@@ -136,17 +156,8 @@ const generateSummaryDOM = (list) => {
 Arguments("elementName", "class", "id")
 class and ID are optionals */
 
-const generateDOMEl = (element, className, id) => {
+const generateDOMEl = (element) => {
   const newEl = document.createElement(element);
-
-  if (className && id) {
-    newEl.className = className;
-    newEl.id = id;
-  } else {
-    element.className = "";
-    element.id = "";
-  }
-
   return newEl;
 }
 

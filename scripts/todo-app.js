@@ -1,3 +1,5 @@
+'use strict'
+
 let todos = getSavedTodos();
 
 const filters = {
@@ -17,7 +19,7 @@ document.querySelector("#filter").addEventListener("input", function(text) {
 document.querySelector("#add-todo").addEventListener("submit", function(evt) {
   evt.preventDefault(); // Prevent default behavior
 
-  const todo = evt.target.elements.text.value; // Input value
+  const todo = evt.target.elements.text.value.trim(); // Input value
 
   // Add todo to the todos Array if there is some value
   const id = uuidv4();
@@ -33,9 +35,8 @@ document.querySelector("#add-todo").addEventListener("submit", function(evt) {
     });
   }
   saveTodos(todos);
+  renderTodos(todos, filters)
   evt.target.elements.text.value = ""; // Clear the input field
-
-  location.assign(`/edit.html#${id}`);
 })
 
 document.querySelector("#check-to-hide").addEventListener("change", function(evt) {

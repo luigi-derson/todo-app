@@ -5,28 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>To Do App</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="icon" href="images/favicon.png">
 </head>
 <body>
-  <h1>To do list</h1>
+  <div class="header">
+      <div class="container">
+        <h1 class="header__title">To-do App</h1>
+        <h2 class="header__subtitle">What do you need to do?</h2>
+      </div>
+    </div>
 
-  <input id="filter" type="text" placeholder="Search todos">
-  <label>
-    <input type="checkbox" name="checkbox" id="check-to-hide"> Hide completed
-  </label>
-  <select id="filter-by">
-    <option value="byEdited">Sort by last edited</option>
-    <option value="byCreated">Sort by recently created</option>
-    <option value="alphabetical">Sort alphabetically</option>
-  </select>
-  <div id="todo-list"></div>
-  <form id="add-todo">
-    <input type="text" placeholder="Something to do" name="text">
-    <button>Add</button>
-  </form>
-  <script src="uuidv4.js"></script>
+  <div class="actions">
+    <div class="actions__container">
+      <input id="filter" type="text" class="input" placeholder="Search todos">
+      <label class="checkbox">
+        <input type="checkbox" name="checkbox" id="check-to-hide"> Hide completed
+      </label>
+      <select id="filter-by" class="dropdown">
+          <option value="byEdited">Sort by last edited</option>
+          <option value="byCreated">Sort by recently created</option>
+          <option value="alphabetical">Sort alphabetically</option>
+        </select>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="todo-list"></div>
+    <form id="add-todo">
+      <input class="input" type="text" placeholder="Something to do" name="text">
+      <button class="button">Add</button>
+    </form>
+  </div>
+
+  <script src="scripts/uuidv4.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
-  <script src="todo-functions.js"></script>
-  <script src="todo-app.js"></script>
+  <script src="scripts/todo-functions.js"></script>
+  <script src="scripts/todo-app.js"></script>
 </body>
 </html>
